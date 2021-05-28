@@ -1,0 +1,27 @@
+import idea
+def main():
+    key = 0x00000000000000000000000000000
+    # plain  = 0x8000000000000000
+    # cipher = 0x8001000180008000
+
+    #key size is 128 bits
+    a = 'aserftghrutj645t'
+    nchars = len(a)
+    #key = sum(ord(a[byte]) << 8 * (nchars - byte - 1) for byte in range(nchars))
+    #plain text size is 64bits
+    plain = "¾n¨ä²"
+    nchars = len(plain)
+    plain = sum(ord(plain[byte]) << 8 * (nchars - byte - 1) for byte in range(nchars))
+    cipher = 0xEA024714AD5C4D84
+    print ('key\t', hex(key))
+    print ('plaintext\t', hex(plain))
+
+    my_IDEA = idea.IDEA(key)
+    encrypted = my_IDEA.encrypt(plain)
+    nchars = len(str(encrypted))
+    encrypted = ''.join(chr((encrypted >> 8 * (nchars - byte - 1)) & 0xFF) for byte in range(nchars))
+    print((encrypted))
+
+
+if __name__ == '__main__':
+    main()
